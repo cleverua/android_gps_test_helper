@@ -1,0 +1,23 @@
+== DESCRIPTION
+
+Testing GPS features for an Android application can be a tricky action. At least that was true for my working environment (WinXP + Eclipse 3.4.1 + ADT 0.9.5 + Android 2.0.1 SDK). I tried to send location from the ADT, but the emulator just got zeros instead. I also tried to use a kml-file filled with location data, but the ADT just ignored that at all. So it turned out that the only working way to feed the emulator with GPS fixes was to use Telnet. Well, working with Telnet from the command line involves too much manual work, that's why I wrote a helper Ruby script.
+
+== USAGE
+
+  require 'android_emulator'
+  
+  AndroidEmulator.connect() do
+    geofix :lon => -87.651891, :lat => 41.86953, :alt => 0
+    wait 2
+    geofix :lon => -87.651891, :lat => 41.86953
+    wait 2
+    geofix '-87.651891 41.86953 0'
+    wait 2
+    geofix '-87.651891 41.86953'
+  end
+
+The 'geofix' injects a new GPS fix to the emulator. Note, in the above code all the 'geofix' calls are identical. The 'wait' accepts an integer number of seconds to sleep. By mixing 'geofix' and 'wait' methods it is possible to run a scenario.
+
+== EXAMPLES
+
+To see an example in action please launch the Android device emulator and run the '/example/example.rb' Ruby script.
